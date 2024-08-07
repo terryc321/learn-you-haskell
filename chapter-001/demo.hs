@@ -218,6 +218,14 @@ pair2 = snd (8,11)
 -- combine list elements into tuples
 zip1 = zip [1,2,3,4,5] [5,5,5,5,5]
 zip2 = zip [1,2,3,4,5] (zip [5,5,5,5,5] [6..10])
+zip3 = zip [1 .. 5] ["one", "two", "three", "four", "five"]  
+zip4 = zip [5,3,2,6,2,7,2,5,4,6,6] ["im","a","turtle"]
+
+triangles = [ (a,b,c) | c <- [1..10], b <- [1..10], a <- [1..10] ]   
+rightTriangles = [ (a,b,c) | c <- [1..10], b <- [1..c], a <- [1..b], a^2 + b^2 == c^2]
+rightTriangles' = [ (a,b,c) | c <- [1..10], b <- [1..c], a <- [1..b], a^2 + b^2 == c^2, a+b+c == 24]
+
+-- this concludes Chapter 2
 
 
 
