@@ -221,6 +221,10 @@ Notice that fromIntegral has several class constraints in its type signature.
 That's completely valid and as you can see, the class constraints are separated by
 commas inside the parentheses.
 
+this concludes chapter 3 on types and type classes
+
+
 -}
+
 
 
