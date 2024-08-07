@@ -190,13 +190,34 @@ sameBangs = boomBangs2 == boomBangs3
 
 boomBangs4 = boomBangs [7..13]  
 
-list4 =  [ x | x <- [10..20], x /= 13, x /= 15, x /= 19]  
+--- 10 to 20 except 13 15 19
+list4 =  [ x | x <- [10..20], x /= 13, x /= 15, x /= 19]
+
+-- x = 2 5 10  , y = 8 10 11 all perms 2*8
+list5 = [ x*y | x <- [2,5,10], y <- [8,10,11]]
+
+list6 = [ x*y | x <- [2,5,10], y <- [8,10,11], x*y > 50]  
 
 
+nouns = ["hobo","frog","pope"]  
+adjectives = ["lazy","grouchy","scheming"]  
+combo = [adjective ++ " " ++ noun | adjective <- adjectives, noun <- nouns]
 
+-- alternative of length using list comprehensions
+length' xs = sum [1 | _ <- xs]
+length2 = length' [11..14]
 
+removeNonUppercase st = [ c | c <- st, c `elem` ['A'..'Z']]   
+re1 = removeNonUppercase "Hello Brognash "
+re2 = removeNonUppercase "IdontLIKEFROGS"  
 
+-- pair tuples (a,b) use first fst and second snd
+pair1 = fst (8,11)
+pair2 = snd (8,11)
 
+-- combine list elements into tuples
+zip1 = zip [1,2,3,4,5] [5,5,5,5,5]
+zip2 = zip [1,2,3,4,5] (zip [5,5,5,5,5] [6..10])
 
 
 
