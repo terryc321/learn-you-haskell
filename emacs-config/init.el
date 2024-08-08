@@ -566,7 +566,7 @@
 ;; interactive = means can be called during editing using M-x 
 ;; r = ustilises regions here selected region 
 ;;(count-lines (point-min) (point-max))
-(defun hask (beginning end)
+(defun haskell-comment-region (beginning end)
         (interactive "r")
         (when (use-region-p)
           (let ((nlines-of-region (count-lines beginning end)))
@@ -591,14 +591,44 @@
               (forward-char 3)
              )))))
 
+(defun haskell-code-region (beginning end)
+        (interactive "r")
+        (when (use-region-p)
+          (let ((nlines-of-region (count-lines beginning end)))
+            (message "there are `%d lines" nlines-of-region)
+            (cond
+             ((> nlines-of-region 1) 
+              ;; multi line comment
+              (goto-char beginning)
+              (newline)
+              (insert "\\begin{code}")
+              (newline)
+              (goto-char end)
+              ;; move forward 3 more chars because we inserted 3 chars
+              (forward-char 14)
+              ;; (newline)
+              (insert "\\end{code}")
+              (newline)
+              )
+             (t ;; single line comment haskell
+              t
+              ;; (goto-char beginning)
+              ;; (insert "-- ")
+              ;; (goto-char end)
+              ;; ;; move forward 3 more chars because we inserted 3 chars
+              ;; (forward-char 3)              
+             )))))
+
+(defalias 'haskell-shift-code-left
+   (kmacro "M-x i n d e n t - r e i <backspace> <backspace> i g h t l y <backspace> <backspace> <backspace> <backspace> <down> <down> <up> <return> S-<left>"))
 
 
 
 
 
 
-;;(lambda ()(interactive)      (hask)))
 
+ 
 
     
 
@@ -716,12 +746,15 @@
 
 (defun myhask () 
   (interactive)
-  (define-key haskell-mode-map (kbd "M-;") #'hask)
+  (define-key haskell-mode-map (kbd "M-;") #'haskell-comment-region)
+  (define-key haskell-mode-map (kbd "M-'") #'haskell-code-region)
+  (define-key haskell-mode-map (kbd "M-#") #'haskell-shift-code-left)
   (define-key haskell-mode-map (kbd "C--") #'undo-redo)
   ;; clear distractions
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
+
 
 ;; can we start lsp-mode ?
 ;;(call-interactively 'lsp-mode)
