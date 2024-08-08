@@ -1,0 +1,125 @@
+ lsp-mode vs. lsp-bridge vs. lspce vs. eglot
+
+Okay, here we go again.
+
+tl;dr -- Every lsp mode for emacs works great, under most
+circumstances you can't go wrong with any of them.
+
+Seriously, if all you want to know is if lsp modes for emacs are good
+and if you should use one, the answer is yes, assuming it supports
+your language.  Summary
+
+    lspce is the lightest weight, least intrusive of all of them, even
+    less than eglot if you ignore the setup costs. It gives you the
+    least ability to inspect what's going on (I haven't checked the
+    project for a couple of weeks, but when I first installed it it
+    didn't even have the stderr output of the lsp that was running)
+    but also feels the most transparent. Similar to lsp-bridge, you'll
+    see a big benefit on large projects with the potential to block
+    your UI.
+
+    lsp-bridge took the most work to set up, and is the least
+    compatible with other common emacs tools, but that might be an
+    advantage if you don't like company or xref. For extremely large
+    projects with massive parsing overhead and the potential to block
+    the UI, it's worth consideration.
+
+    lsp-mode is huge and complicated and does a lot of things and
+    supports the most features. The release notes for lsp-mode 9.0 is
+    longer than the whole feature list for lspce, I think.
+
+    eglot is built in and relatively simple to set up.
+
+    lsp-mode and eglot can both make up for the single-threaded nature
+    of emacs by using lsp-booster. The json parsing in lsp-booster is
+    better than what emacs 29 currently ships with (which will not
+    necessarily be true with the upgrades to the json parser recently
+    integrated), but still works async with emacs, so you'll never get
+    the UI freezing while you wait for a completion. So in that
+    regard, every lsp mode is on equal footing when it comes to bigger
+    projects.
+
+    Note: by bigger projects, I mean something like an Unreal Engine
+    game, which is what I'm working on. Not only do I have all of
+    Unreal to contend with, but a few layers of other game
+    frameworks. I'm using clangd and c++ on Windows 10. I'm using
+    clang-format, tree-sitter, helm, company and xref (except when
+    using lsp-bridge) for whatever that's worth.
+
+lspce
+
+I've been using lspce for a few weeks, and I think it's a little bit
+forgotten in the community here, but it's really good. The developer
+is quite responsive to feedback, and because the project is small, he
+can add features in quite quickly--he fixed something up literally a
+day after I mentioned it in another post.
+
+It's *incredibly* out of the way. It's the mode I've noticed the least
+in my day-to-day work out of all 4 of these, and that's just because
+it also has the least to configure. If it doesn't do something that
+you want, you can probably request it, but if you've got a long list
+of things that you love about lsp-mode, you might not be satisfied
+here. If you're looking for solid, easy completion using standard
+emacs packages like company and xref, lspce is excellent.  lsp-bridge
+
+Lsp-bridge gave me the most setup trouble, but a lot of that is on
+me. I'm on windows, I'm not used to working with python and it's not
+already installed, and my project setup is a bit different. Similar to
+lspce, the lsp-bridge team is quite responsive and they added
+.dir-locals.el support for project roots on my request. You can also
+set a function that returns your project root, if you want.
+
+The completion framework is bespoke, and it works well, but if you
+want to use company for other things, you'll have to work something
+out so they don't interfere with each other. I had a few niggles here
+and there, but at the time, lsp-bridge was a revelation to me. I
+thought I'd have to give up on using lsps because of the problem of
+the UI blocking, and lsp-bridge was the first thing I used where
+everything happened quickly and reliably.  lsp-mode (no lsp-booster)
+
+I won't spend too much time on lsp-mode, because I think it's
+generally well understood and respected around here. It's big and full
+featured. Saw something in the lsp spec that you'd like to try out?
+lsp-mode probably has support for it. If it doesn't, it almost
+certainly will in the future. If you don't have trouble with being
+blocked during completion lookups, lsp-mode works great out of the
+box.
+
+It probably pays to be cautious with how you tinker with the config,
+though. There's so much there and so many boxes to check, you can get
+yourself into a state where things are happening and you have NO idea
+what you enabled to do that.  eglot (no lsp-booster)
+
+eglot is built in, it sits between lspce and lsp-mode for
+configurability, giving you a few dials to tweak, but holding back on
+some other stuff. I have personally had the most trouble with eglot,
+and I cannot tell you why those things happened (in particular, I
+somehow got into a state where it decided that some folders were their
+own projects and spun up clangd for each of them, leaving me with
+10-12 clangd processes running, each taking up 5-15GB of memory).
+
+As the default, built-in experience of lsp modes in emacs, I have no
+particular complaints other than the bugs I ran into. It was rolled
+into emacs precisely because it's good, not too confusing, easy to set
+up, and highly compatible. Because it's built into emacs, it has all
+the same development overhead/advantages that being a 1st party
+product has. Do with that what you will.  lsp-boosted eglot & lsp-mode
+
+I'll be honest, I think at this point, lsp-booster or something
+similar should ship as a default package with emacs. eglot and
+lsp-mode are 10x better when it's active. Completions are faster, or
+at the very least, you don't sit and stare at a frozen editor for 2s
+every time something goes wrong. It completely changes the experience.
+Conclusion
+
+I'm going to stick with lspce for a while; the minimalism happens to
+suit me, and I've had no major issues so far. I would like to see
+clangd's stderr output, but honestly, I can't actually do anything
+with 99% of the info it gives me.
+
+If you randomly assigned one of these lsps to me, I would work with
+any of them (as long as lsp-booster was allowed). I mean that
+genuinely, there are definitely 4 excellent choices here. If you're a
+programmer working without an lsp, you owe it to yourself to try one
+out.
+
